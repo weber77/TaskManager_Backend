@@ -3,12 +3,18 @@ const mongoose = require("mongoose");
 const Group = mongoose.model(
   "Group",
   new mongoose.Schema({
-    name: String,
+    name: {type: String, unique:true},
     description: String,
-    admin : {
+    admin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    },
+    members: [
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
       }
+    ]
   })
 );
 

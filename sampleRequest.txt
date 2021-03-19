@@ -1,0 +1,42 @@
+URL = "http://localhost:8080/api/"
+
+User
+    Endpoint:
+         http://localhost:8080/api/test/all
+         http://localhost:8080/api/test/admin
+         http://localhost:8080/api/test/user 
+         http://localhost:8080/api/auth/signin
+         http://localhost:8080/api/auth/signup
+
+
+Group
+    Endpoint:
+        URL/groups/createGroup/
+            body:
+                {
+                    "name": "group1",
+                    "description": "First group ever",
+                    "adminId": "60512c26dfe67198aaa0c710",
+                    "members": [
+                                "60512c26dfe67198aaa0c710", 
+                                "60512c4edfe67198aaa0c711", 
+                                "60512c79dfe67198aaa0c712"
+                               ]
+                }
+Task:
+    Endpoint:
+        URL/task/createTask/
+            body: 
+                {
+                    "title" : "first task",
+                    "description": " So this is the frist task wronly spelled",
+                    "groupId" : "6053ee8d11f06a07a24a64d3",
+                    "user" : "60512c4edfe67198aaa0c711"
+                }
+Request:
+    Endpoint:
+        URL/request/createRequest/
+            body:
+             {
+
+             }

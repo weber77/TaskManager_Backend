@@ -5,13 +5,19 @@ const User = mongoose.model(
   new mongoose.Schema({
     firstname: String,
     lastname: String,
-    username: String,
+    username: {type: String, unique: true},
     email: String,
     password: String,
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Role"
+      }
+    ],
+    request:[
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Request"
       }
     ]
   })
