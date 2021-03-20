@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const Request = mongoose.model(
   "Request",
   new mongoose.Schema({
-    Status: Boolean,
+    status: Boolean,
+    type: String,
     admin: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
