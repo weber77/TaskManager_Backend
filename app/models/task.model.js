@@ -7,10 +7,6 @@ const Task = mongoose.model(
     description: String,
     assignmentStatus: String,
     progressStatus: String,
-    group : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Group"
-      },
     user : {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

@@ -5,15 +5,15 @@ const User = db.user;
 
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
-  };
-  
-  exports.userBoard = (req, res) => {
+};
+
+exports.userBoard = (req, res) => {
     res.status(200).send("User Content.");
-  };
-  
-  exports.adminBoard = (req, res) => {
+};
+
+exports.adminBoard = (req, res) => {
     res.status(200).send("Admin Content.");
-  };
+};
 
 
 exports.findOne = (req, res) => {
@@ -50,7 +50,7 @@ exports.invitationRequest = (req, res) => {
 
                 request = new Request({
 
-                    status: '',
+                    status: false,
                     admin: req.body.adminId,
                     group: req.body.groupId,
                     user: id,
@@ -129,7 +129,7 @@ exports.invitationResponse = (req, res) => {
                             }
                             else {
                                 groupData.members.push(data.user);
-                                
+
                                 Group.findByIdAndUpdate(groupData.id, groupData, { useFindAndModify: false })
                                     .then(data1 => {
                                         if (!data1) {
@@ -235,8 +235,12 @@ exports.joinRequest = (req, res) => {
                     .save(request)
                     .then(requestData => {
 
-                        data.request.push(requestData._id);
-                        console.log(data);
+                        User.findById(req.body.adminId)
+                            .then(adminData => {
+                                adminData.request.push(requestData._id)
+                            });
+                        // data.request.push(requestData._id);
+                        // console.log(data);
 
                         User.findByIdAndUpdate(id, data, { useFindAndModify: false })
                             .then(data => {
@@ -321,23 +325,51 @@ exports.getAllInvitation = (req, res) => {
 
 }
 
-exports.getAdmins = (req, res) => {
 
-}
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
-  
+
     User.find(condition)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving tutorials."
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving tutorials."
+            });
         });
-      });
-  };
+};
+
+
+exports.getAdmins = (req, res) => {
+
+
+
+    User.find()
+        .then(data => {
+            name: { $in: data };
+            console.log(name);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving tutorials."
+            });
+        });
+
+    // User.findById(id)
+    // .then(data => {
+    //     if (!data)
+    //         res.status(404).send({ message: "Not found User with id " + id });
+    //     else res.send(data);
+    // })
+    // .catch(err => {
+    //     res
+    //         .status(500)
+    //         .send({ message: "Error retrieving User with id=" + id });
+    // });
+}

@@ -10,7 +10,6 @@ module.exports = function(app) {
     next();
   });
 
-
   app.post(
     "/api/invitation",
     [authJwt.verifyToken, authJwt.isAdmin],
@@ -19,7 +18,7 @@ module.exports = function(app) {
 
   app.get(
     "/api/getUser/:id",
-    [authJwt.verifyToken, authJwt.isAdmin],
+    // [authJwt.verifyToken, authJwt.isAdmin],
     controller.findOne
   );
 
@@ -33,8 +32,6 @@ module.exports = function(app) {
 
   app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
 
-
-
   app.get(
     "/api/test/admin",
     [authJwt.verifyToken, authJwt.isAdmin],
@@ -46,6 +43,9 @@ module.exports = function(app) {
     controller.findAll
   );
 
-  
+  app.get(
+    "/api/getAdmins",
+    controller.getAdmins
+  );
 
 };

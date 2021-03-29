@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const Request = mongoose.model(
   "Request",
   new mongoose.Schema({
-    status: Boolean,
-    type: String,
+    status: Boolean, // false 
+    type: String, // join or invitation
     admin: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

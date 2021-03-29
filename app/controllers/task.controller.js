@@ -1,4 +1,6 @@
 const db = require("../models");
+const Group = require("../models/group.model");
+const User = require("../models/user.model");
 const Task = db.task;
 
 
@@ -16,22 +18,39 @@ exports.create = (req, res) => {
         description: req.body.description,
         assignmentStatus: "initialized",
         progressStatus: "0%",
-        group: req.body.group,
+        // group: req.body.groupId,
         user: req.body.user
     });
 
-    // Save Task in the database
-    task
-        .save(task)
+
+    const id = req.body.groupId
+    Group.findById(id)
         .then(data => {
-            res.send(data);
+            if (!data)
+                res.status(404).send({ message: "No found Group with id " + id });
+            else {
+                task
+                    .save(task)
+                    .then(taskData => {
+                        data.tasks.push(taskData._id);
+                        console.log(data);
+
+                        Group.findByIdAndUpdate(id, data, { useFindAndModify: false })
+                            .then(data => {
+                                if (!data) {
+                                    res.status(404).send({
+                                        message: `Cannot update Group with id=${id}. Maybe Task was not found!`
+                                    });
+                                } else res.send({ message: "Group was updated successfully." });
+                            })
+                            .catch(err => {
+                                res.status(500).send({
+                                    message: "Error updating Group with id=" + id
+                                });
+                            });
+                    })
+            }
         })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while creating the Task."
-            });
-        });
 };
 
 // Retrieve all Tutorials from the database.
@@ -41,6 +60,13 @@ exports.findAll = (req, res) => {
 
     Task.find(condition)
         .then(data => {
+            data.forEach(element => {
+                User.findById(element.user)
+                    .then(user => {
+                        data.user= "adfa";
+                        console.log(user);
+                    })
+            });
             res.send(data);
         })
         .catch(err => {

@@ -14,6 +14,12 @@ const Group = mongoose.model(
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
       }
+    ],
+    tasks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task"
+      }
     ]
   })
 );
